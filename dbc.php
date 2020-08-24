@@ -31,9 +31,9 @@ $blogData = getAllBlog();           //取得したデータを表示
 
 function setCategoryName($category) {           //カテゴリー別に分類
     if ($category === '1') {
-        return 'ブログ';
-    }elseif ($category === '2') {
         return '日常';
+    }elseif ($category === '2') {
+        return 'プログラミング';
     } else {
         return 'その他';
     }
