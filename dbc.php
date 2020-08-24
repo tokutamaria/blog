@@ -1,9 +1,8 @@
 <?php
-function dbConnect () {
+function dbConnect() {          //DB接続
     $dsn = 'mysql:host=localhost;port=3306;dbname=blog_app;charset=utf8';
     $user=  'blog_user';
     $pass= 'popmoka0721';
-
 
     try {
         $dbh = new PDO($dsn, $user, $pass,);
@@ -14,7 +13,7 @@ function dbConnect () {
         return $dbh;
 }
 
-function getAllBlog() {
+function getAllBlog() {         //ブログ記事取得
 $dbh = dbConnect();
 
 $sql = 'SELECT * FROM blog';
@@ -28,9 +27,9 @@ $dbh = null;
 
 }
 
-$blogData = getAllBlog();
+$blogData = getAllBlog();           //取得したデータを表示
 
-function setCategoryName($category) {
+function setCategoryName($category) {           //カテゴリー別に分類
     if ($category === '1') {
         return 'ブログ';
     }elseif ($category === '2') {
@@ -40,31 +39,19 @@ function setCategoryName($category) {
     }
 }
 
-?>
+function getBlog($id) {
+    if (empty($id)) {
+    exit('IDが正しくありません。');
+    }
 
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- <meta http-equiv="X-UA-Compatible" content="ie=edge"> -->
-    <title>ブログ一覧</title>
-</head>
-<body>
-    <h1>ブログ一覧</h1>
-    <table>
-        <tr>
-            <th>No</th>
-            <th>タイトル</th>
-            <th>カテゴリ</th>
-        </tr>
-        <?php foreach($blogData as $column) :?>
-        <tr>
-            <td><?php echo $column['id'] ?></td>
-            <td><?php echo $column['title'] ?></td>
-            <td><?php echo setCategoryName($column['category'] )?></td>
-        </tr>
-        <?php endforeach;?>
-    </table>
-</body>
-</html>
+
+    $dbh = dbConnect();
+    $stmt = $dbh->prepare('SELECT * FROM blog WHERE id = :id');
+    $stmt->bindValue(':id', (int)$id, PDO::PARAM_INT);
+    $stmt->execute();
+
+    $result = $stmt->fetch(PDO::FETCH_ASSOC);
+    if (!$result) {
+        exit('ブログ記事がありません。');
+    }
+}
