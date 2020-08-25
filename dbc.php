@@ -1,49 +1,58 @@
 <?php
-ini_set('display_errors', "On");
 
-Class Dbc
-{
+Class Dbc {
     protected $table_name;
 
-    protected function dbConnect() {          //DB接続
-        $dsn = 'mysql:host=localhost;port=3306;dbname=blog_app;charset=utf8';
-        $user=  'blog_user';
-        $pass= 'popmoka0721';
+    protected function dbConnect() {
+        $dbh = 'mysql:host=localhost;post=3306;dbname=blog_app;charset=utf8';
+        $user = 'blog_user';
+        $pass = 'popmoka0721';
 
         try {
-            $dbh = new PDO($dsn, $user, $pass,);
-        }catch (PDOException $e) {
-            echo '接続失敗' . $e->getMessage();
-            exit();
-        };
-        return $dbh;
-    }
+            $dbh = new PDO($dbh,$user,$pass,[
+                PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+                ]);
 
-    public function getAll() {         //記事取得
-        $dbh = $this->dbConnect();
+            } catch(PDOException $e) {
+                echo '接続失敗' . $e->getMessage();
+                exit();
+            }
 
-        $sql = "SELECT * FROM $this->table_name";
-        $stmt = $dbh->query($sql);
-        $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        return $result;
-        $dbh = null;
-    }
-
-    public function getById($id) {          //詳細を取得
-        if (empty($id)) {
-            exit('IDが正しくありません。');
+            return $dbh;
         }
 
-        $dbh = $this->dbConnect();
-        // $db->setAttribute(PDO::ATTR_ERRMODE,PDO::ERRMODE_EXCEPTION);
-        // $db->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
-        $stmt = $dbh->prepare("SELECT * FROM $this->table_name WHERE id = :id");
-        $stmt->bindValue(':id', (int)$id, PDO::PARAM_INT);
-        $stmt->execute();
+        public function getAll() {
+            $dbh = $this->dbConnect();
 
-        $result = $stmt->fetch(\PDO::FETCH_ASSOC);
-        if (!$result) {
-            exit('ブログ記事がありません。');
+            $sql = "SELECT * FROM $this->table_name";
+            $stmt = $dbh->query($sql);
+            $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            return $result;
+            $dbh = null;
+        }
+
+        // $blogData = $this->getAllBlog();
+
+
+
+        public function getById($id) {
+            if(empty($id)) {
+                exit('IDが不正です');
+            }
+
+
+            $dbh = $this->dbConnect();
+
+            $stmt = $dbh->prepare("SELECT * FROM $this->table_name Where id = :id");
+            $stmt->bindValue(':id', (int)$id, PDO::PARAM_INT);
+            $stmt->execute();
+            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            if(!$result) {
+                exit('ブログがありません');
+            }
+
+            return $result;
         }
     }
-}
+        ?>
