@@ -1,6 +1,5 @@
 <?php
 require_once('blog.php');
-ini_set('display_errors', "On");
 
 $blogs = $_POST;
 

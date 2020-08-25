@@ -1,10 +1,11 @@
 <?php
 require_once('dbc.php');
+ini_set('display_errors', "On");
 
 Class Blog extends Dbc
 {
     protected $table_name = 'blog';
-    
+
     public function setCategoryName($category) {           //カテゴリー別に分類
         if ($category === '1') {
             return '日常';
@@ -23,8 +24,8 @@ Class Blog extends Dbc
         $dbh = $this->dbConnect();
         $dbh->beginTransaction();
         try {
-            // $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-            // $dbh->setAttribute(PDO::ATTR_EMULATE_PREPARES,false);
+            $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            $dbh->setAttribute(PDO::ATTR_EMULATE_PREPARES,false);
             $stmt = $dbh->prepare($sql);
 
             $stmt->bindValue(':title',$blogs['title'],PDO::PARAM_STR);
@@ -39,5 +40,4 @@ Class Blog extends Dbc
         }
     }
 }
-
 ?>

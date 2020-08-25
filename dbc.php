@@ -1,4 +1,5 @@
 <?php
+ini_set('display_errors', "On");
 
 Class Dbc
 {
@@ -23,29 +24,24 @@ Class Dbc
 
         $sql = "SELECT * FROM $this->table_name";
         $stmt = $dbh->query($sql);
-
-        $result = $stmt->fetchall(PDO::FETCH_ASSOC);
-
+        $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
         return $result;
         $dbh = null;
-
-
     }
-
-
 
     public function getById($id) {          //詳細を取得
         if (empty($id)) {
             exit('IDが正しくありません。');
         }
 
-
         $dbh = $this->dbConnect();
+        // $db->setAttribute(PDO::ATTR_ERRMODE,PDO::ERRMODE_EXCEPTION);
+        // $db->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
         $stmt = $dbh->prepare("SELECT * FROM $this->table_name WHERE id = :id");
         $stmt->bindValue(':id', (int)$id, PDO::PARAM_INT);
         $stmt->execute();
 
-        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        $result = $stmt->fetch(\PDO::FETCH_ASSOC);
         if (!$result) {
             exit('ブログ記事がありません。');
         }

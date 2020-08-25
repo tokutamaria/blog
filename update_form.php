@@ -1,7 +1,8 @@
 <?php
 require('blog.php');
+ini_set('display_errors', "On");
 $blog = new Blog();
-$result = $blog->getById($_GET['id']);
+$result = getById($_GET['id']);
 
 $title = $result['title'];
 $content = $result['content'];
@@ -11,7 +12,7 @@ $publish_status = $result['publish_status'];
 ?>
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ja">
 
 <head>
   <meta charset="UTF-8">
