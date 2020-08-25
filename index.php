@@ -1,7 +1,8 @@
 <?php
-require_once('dbc.php');
+require_once('blog.php');
 
-$blogData = getAllBlog();
+$blog = new Blog();
+$blogData = $blog->getAll();
 ?>
 
 <!DOCTYPE html>
@@ -24,8 +25,9 @@ $blogData = getAllBlog();
         <tr>
             <td><?php echo $column['id'] ?></td>
             <td><?php echo $column['title'] ?></td>
-            <td><?php echo setCategoryName($column['category'] )?></td>
+            <td><?php echo $blog->setCategoryName($column['category'] )?></td>
             <td><a href="detail.php?id=<?php echo $column['id'] ?>">詳細</a></td>
+            <td><a href="update_form.php?id=<?php echo $column['id'] ?>">編集</a></td>
         </tr>
         <?php endforeach;?>
     </table>
