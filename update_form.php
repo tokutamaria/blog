@@ -9,7 +9,7 @@ $id = $result['id'];
 $title = $result['title'];
 $content = $result['content'];
 $category = (int)$result['category'];
-$publish_status = (int)$result['publish_status'];
+// $publish_status = (int)$result['publish_status'];
 
 ?>
 <!DOCTYPE html>

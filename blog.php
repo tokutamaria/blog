@@ -3,7 +3,7 @@ require_once('dbc.php');
 
 Class Blog extends Dbc {
 
-protected $table_name = 'blog';
+protected $table_name = 'tac_blog';
 
 public function setCategoryName($category) {
         if ($category === '1') {
